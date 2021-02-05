@@ -1,0 +1,143 @@
+*TABLE Client:
+CREATE TABLE `clients` (
+  `id_client` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `Societe` varchar(256) NOT NULL,
+  `I_unique` varchar(256) NOT NULL,
+  `Tel` varchar(256) NOT NULL,
+  `Email` varchar(256) NOT NULL,
+  `Adresse` varchar(256) NOT NULL,
+  `TVA` varchar(256) NOT NULL,
+  `Gerant` varchar(256) NOT NULL,
+  `Forme_juridique` varchar(256) NOT NULL,
+  `Fodec` varchar(256) NOT NULL,
+  `Exonore` varchar(256) NOT NULL,
+  `Capital` varchar(256) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_client`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+*TABLE HONORAIRE:
+CREATE TABLE `honoraires` (
+  `id_hon` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `Reference` varchar(255) NOT NULL,
+  `Designation` varchar(255) NOT NULL,
+  `Prix` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_hon`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+*TABLE CHARGE:
+CREATE TABLE `charges` (
+  `id_ch` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `Designations` varchar(255) NOT NULL,
+  `Prix` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_ch`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+*TABLES TRANSACTIONS
+CREATE TABLE `transactions` (
+  `id_tr` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `client` varchar(255) NOT NULL,
+  `solde` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_tr`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+*Tables changes:
+CREATE TABLE `changes` (
+   `id_chan` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id_tr` bigint unsigned NOT NULL,
+  `payee` varchar(255) NOT NULL,
+  `reste` varchar(255) NOT NULL,
+  `nouveau_solde` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_chan`),
+  KEY `id_tr` (`id_tr`),
+  CONSTRAINT `changes_ibfk_1` FOREIGN KEY (`id_tr`) REFERENCES `transactions` (`id_tr`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+*Table facture:
+CREATE TABLE `factures` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id_client` bigint unsigned NOT NULL,
+  `Numero` varchar(255) NOT NULL AUTO_INCREMENT,
+  `Societe` varchar(255) NOT NULL,
+  `Adresse` varchar(255) NOT NULL,
+  `I_unique` varchar(255) NOT NULL,
+  `STotal` varchar(255) NOT NULL,
+  `totalcharge` varchar(255) NOT NULL,
+  `STHonoraires` varchar(255) NOT NULL,
+  `STHon` varchar(255) NOT NULL,
+  `frac` varchar(255) NOT NULL,
+  `REMISE` varchar(255) NOT NULL,
+  `sous_total` varchar(255) NOT NULL,
+  `ttva` varchar(255) NOT NULL,
+  `total` varchar(255) NOT NULL,
+  `enlettre` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `id_client` (`id_client`),
+  CONSTRAINT `factures_ibfk_1` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+*Table selectedcharges
+CREATE TABLE `selectedcharges` (
+  `id_ch` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id_facture` bigint unsigned NOT NULL,
+  `descriptions` varchar(255) NOT NULL,
+  `prices` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_ch`),
+  KEY `id_facture` (`id_facture`),
+  CONSTRAINT `selectedcharges_ibfk_1` FOREIGN KEY (`id_facture`) REFERENCES `factures` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+*Tables selectedhonoraires:
+CREATE TABLE `selectedhonoraires` (
+  `id_hon` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id_facture` bigint unsigned NOT NULL,
+  `ref` varchar(255) NOT NULL,
+  `designation` varchar(255) NOT NULL,
+  `price` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_hon`),
+  KEY `id_facture` (`id_facture`),
+  CONSTRAINT `selectedhonoraires_ibfk_1` FOREIGN KEY (`id_facture`) REFERENCES `factures` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
+`id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id_cli` bigint unsigned NOT NULL,
+  `Numero` varchar(255) NOT NULL ,
+`payement` varchar(255) NOT NULL ,
+
+  `Societe` varchar(255) NOT NULL,
+  `Adresse` varchar(255) NOT NULL,
+  `I_unique` varchar(255) NOT NULL,
+  `STotal` varchar(255) NOT NULL,
+  `totalcharge` varchar(255) NOT NULL,
+  `STHonoraires` varchar(255) NOT NULL,
+  `STHon` varchar(255) NOT NULL,
+  `frac` varchar(255) NOT NULL,
+  `REMISE` varchar(255) NOT NULL,
+  `sous_total` varchar(255) NOT NULL,
+  `ttva` varchar(255) NOT NULL,
+  `total` varchar(255) NOT NULL,
+  `enlettre` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `id_cli` (`id_cli`),
+  CONSTRAINT `factures_ibfk_2` FOREIGN KEY (`id_cli`) REFERENCES `clients` (`id_client`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
